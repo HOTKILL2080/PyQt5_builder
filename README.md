@@ -1,0 +1,1 @@
+krc eto crivoi pyqt5 builder vot.
