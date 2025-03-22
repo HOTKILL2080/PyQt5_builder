@@ -17,7 +17,7 @@ class QTextEdit_Moded(QTextEdit):
         self.name = name
 
 class MyApp(QApplication):
-    def __init__(self, width, height):
+    def __init__(self, width: int, height: int):
         QApplication.__init__(self, sys.argv)
         self.win = QMainWindow()
         self.win.setGeometry(750, 250, width, height)
@@ -26,36 +26,38 @@ class MyApp(QApplication):
         self.btn_array = []
         self.textedit_array = []
 
-    def widget_create(self, type, name, width, height, x, y, text):
+    def widget_create(self, type: str, name: str, width=0, height=0, font_size=11, x=0, y=0, text=''):
         if type == 'lab':
             self.widget = QLabel_Moded(self.win, name, text)
             self.widget.setFixedSize(width, height)
+            self.widget.setStyleSheet(f'font-size: {str(font_size)}px')
             self.widget.move(x, y)
             self.label_array.append(self.widget)
         elif type == 'btn':
             self.widget = QPushButton_Moded(self.win, name, text)
             self.widget.setFixedSize(width, height)
+            self.widget.setStyleSheet(f'font-size: {str(font_size)}px')
             self.widget.move(x, y)
             self.btn_array.append(self.widget)
         elif type == 'ted':
             self.widget = QTextEdit_Moded(self.win, name, text)
             self.widget.setFixedSize(width, height)
+            self.widget.setStyleSheet(f'font-size: {str(font_size)}px')
             self.widget.move(x, y)
             self.textedit_array.append(self.widget)
+        return self.widget
 
-    def move_from(self, name_widget, name_fromwidget, side, indentation=10):
-        self.widget = self.widget_find(name_widget)
-        self.fromwidget = self.widget_find(name_fromwidget)
+    def move_from(self, widget: object, fromwidget: object, side: str, indentation=10):
         if side == 'r':
-            self.widget.move(self.fromwidget.x() + self.fromwidget.width() + indentation, self.fromwidget.y() + self.fromwidget.height() // 2 - self.widget.height() // 2)
+            widget.move(fromwidget.x() + fromwidget.width() + indentation, fromwidget.y() + fromwidget.height() // 2 - widget.height() // 2)
         elif side == 'l':
-            self.widget.move(self.fromwidget.x() - self.widget.width() - indentation , self.fromwidget.y() + self.fromwidget.height() // 2 - self.widget.height() // 2)
+            widget.move(fromwidget.x() - widget.width() - indentation , fromwidget.y() + fromwidget.height() // 2 - widget.height() // 2)
         elif side == 'u':
-            self.widget.move(self.fromwidget.x() + self.fromwidget.width() // 2 - self.widget.width() // 2, self.fromwidget.y() - self.widget.height() - indentation)
+            widget.move(fromwidget.x() + fromwidget.width() // 2 - widget.width() // 2, fromwidget.y() - widget.height() - indentation)
         elif side == 'd':
-            self.widget.move(self.fromwidget.x() + self.fromwidget.width() // 2 - self.widget.width() // 2, self.fromwidget.y() + self.fromwidget.height() + indentation)
+            widget.move(fromwidget.x() + fromwidget.width() // 2 - widget.width() // 2, fromwidget.y() + fromwidget.height() + indentation)
 
-    def widget_find(self, name_widget):
+    def widget_find(self, name_widget: str):
         for i in self.btn_array, self.label_array, self.textedit_array:
             for e in i:
                 if e.name == name_widget:
